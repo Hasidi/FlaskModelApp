@@ -38,7 +38,7 @@ class ModelProvider(object):
         try:
             exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=3)
         except:
-            exit_code = 0
+            exit_code = 1
         if exit_code != 0:
             return ''
         with open(output_path, 'r') as f:
