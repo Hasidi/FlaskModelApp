@@ -1,6 +1,8 @@
 import json
 import os
 import unittest
+from datetime import datetime
+
 import requests
 
 from src.model_provider import MODEL_FILE_PATH
@@ -31,6 +33,14 @@ class SystemTests(unittest.TestCase):
         result = json.loads(resp.text)['result']
         self.assertEqual('5', result)
 
-
-
-
+    def test_timeout(self):
+        resp = requests.post(url=f'{BASE_URL}/api/model',
+                             data="from time import sleep\nsleep(10)",
+                             headers={'Content-Type': 'text/plain'})
+        self.assertEqual(200, resp.status_code)
+        dt1 = datetime.now()
+        resp = requests.post(f'{BASE_URL}/api/prediction', json={"log": "some1"})
+        self.assertEqual(500, resp.status_code)
+        dt2 = datetime.now()
+        diff = (dt2 - dt1).total_seconds()
+        self.assertGreater(diff, 3)

@@ -1,6 +1,7 @@
 import os
 import subprocess
 import uuid
+from functools import lru_cache
 
 MODEL_OUTPUT_FOLDER = 'model_output'
 MODEL_FOLDER = 'model'
@@ -12,8 +13,7 @@ class ModelProvider(object):
         if not os.path.exists(MODEL_OUTPUT_FOLDER):
             os.makedirs(MODEL_OUTPUT_FOLDER)
 
-    @staticmethod
-    def save_model(model: str) -> bool:
+    def save_model(self, model: str) -> bool:
         """
         :param string model: code as string
         :return bool: if succeeded
@@ -24,16 +24,21 @@ class ModelProvider(object):
             return True
         except:
             return False
+        finally:
+            self.get_prediction.cache_clear()
 
-    @staticmethod
-    def get_prediction(data: str) -> str:
+    @lru_cache(maxsize=1000)
+    def get_prediction(self, data: str) -> str:
         """"
         :param str data: script content
         :return: script output
         :rtype: str
         """
         output_path = f'{MODEL_OUTPUT_FOLDER}/{str(uuid.uuid4())}.txt'
-        exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data])
+        try:
+            exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=3)
+        except:
+            exit_code = 0
         if exit_code != 0:
             return ''
         with open(output_path, 'r') as f:
