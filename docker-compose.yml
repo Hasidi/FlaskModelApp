@@ -25,6 +25,7 @@ services:
     networks:
       - no-internet
       - internet
+    restart: always
 
 networks:
   no-internet:

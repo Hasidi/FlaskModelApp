@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! docker-compose up -d --scale web=2; then
+if ! docker-compose up --scale web=2 -d; then
   echo "=> Failed to build docker. Exit"
   exit 1
 fi
