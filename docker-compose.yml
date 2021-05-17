@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+
+  web:
+    build: .
+    volumes:
+      - ./model/.:/flask-app/model
+    image: flask-model-app:tag
+    expose:
+      - "5000"
+    networks:
+      - no-internet
+      - internet
+    restart: always
+    entrypoint: ["python", "app.py"]
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+    ports:
+      - "${APP_PORT}:4000"
+    networks:
+      - no-internet
+      - internet
+
+networks:
+  no-internet:
+    internal: true
+  internet: {}
