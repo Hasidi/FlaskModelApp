@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from src.model_provider import MODEL_FILE_PATH
+from src.model_provider import MODEL_FILE_PATH, TIMEOUT_SEC
 
 port = os.environ.get('APP_PORT')
 BASE_URL = f'http://localhost:{port}'
@@ -43,4 +43,5 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(500, resp.status_code)
         dt2 = datetime.now()
         diff = (dt2 - dt1).total_seconds()
-        self.assertGreater(diff, 3)
+        self.assertGreater(diff, TIMEOUT_SEC)
+        self.assertLess(diff, TIMEOUT_SEC + 1)

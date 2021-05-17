@@ -6,6 +6,7 @@ from functools import lru_cache
 MODEL_OUTPUT_FOLDER = 'model_output'
 MODEL_FOLDER = 'model'
 MODEL_FILE_PATH = f'{MODEL_FOLDER}/test_model.py'
+TIMEOUT_SEC = 5
 
 
 class ModelProvider(object):
@@ -36,7 +37,7 @@ class ModelProvider(object):
         """
         output_path = f'{MODEL_OUTPUT_FOLDER}/{str(uuid.uuid4())}.txt'
         try:
-            exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=30)
+            exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=TIMEOUT_SEC)
         except:
             exit_code = 1
         if exit_code != 0:
