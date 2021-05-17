@@ -1,8 +1,6 @@
 Prepare Env:
-- Run: <br>
-    - `sudo yum install git -y` <br>
-    - `git clone https://github.com/Hasidi/FlaskModelApp.git` <br>
-    - `prep.sh` <br>
+  - `git clone https://github.com/Hasidi/FlaskModelApp.git` <br>
+  - run `prep_ubuntu.sh` (Ubuntu Server 16.04) <br>
 - Reboot instance 
 
-Run `run.sh`
+Run with `run.sh`
