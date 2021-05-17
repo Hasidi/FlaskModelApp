@@ -36,7 +36,7 @@ class ModelProvider(object):
         """
         output_path = f'{MODEL_OUTPUT_FOLDER}/{str(uuid.uuid4())}.txt'
         try:
-            exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=3)
+            exit_code = subprocess.call(['python', MODEL_FILE_PATH, output_path, data], timeout=30)
         except:
             exit_code = 1
         if exit_code != 0:
